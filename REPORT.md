@@ -14,7 +14,32 @@
 ## 2. Реализованные компоненты
 
 ### ✅ Файловая структура пакета
-bash-it-dpkg/ ├── debian/ # Метаданные упаковки │ ├── changelog │ ├── control │ ├── rules │ ├── bash-it-dpkg.install │ ├── bash-it-dpkg.docs │ └── source/options ├── etc/profile.d/bash-it.sh # Автозагрузка при входе ├── usr/bin/bashitctl # CLI для активации ├── opt/.keep # Плейсхолдер (opt/bash-it/ — игнорируется) ├── docs/ # Документация │ ├── INSTALL.md │ └── USAGE.md ├── setup.sh # Скрипт подготовки окружения ├── .gitignore # Исключение артефактов ├── .gitattributes # Контроль symlinks и EOL └── README.md # Основная документация (на английском)
+```text
+bash-it-dpkg/
+├── debian/
+│   ├── changelog
+│   ├── control
+│   ├── rules
+│   ├── bash-it-dpkg.install
+│   ├── bash-it-dpkg.docs
+│   └── source/
+│       └── options
+├── etc/
+│   └── profile.d/
+│       └── bash-it.sh
+├── usr/
+│   └── bin/
+│       └── bashitctl
+├── opt/
+│   └── .keep
+├── docs/
+│   ├── INSTALL.md
+│   └── USAGE.md
+├── setup.sh
+├── .gitignore
+├── .gitattributes
+└── README.md
+```
 
 
 ## 3. Ключевые особенности
@@ -27,50 +52,15 @@ bash-it-dpkg/ ├── debian/ # Метаданные упаковки │ ├�
 | **Сборка из исходников** | Поддержка `debuild`, `dpkg-buildpackage` |
 | **Прямые ссылки на .deb** | Пакет доступен через GitHub Releases |
 
-## 4. Решённые проблемы
 
-| Проблема | Решение |
-|--------|--------|
-| `dpkg-source` падает на symlinks | `setup.sh` заменяет ссылки на копии или заглушки |
-| Общие настройки для всех пользователей | Через `BASH_IT=$HOME/.bash_it` — изоляция |
-| Артефакты в `..` мешают Git | `.gitignore` + рекомендация использовать `--build-dir=./build/` |
-| `debclean` ругается на отсутствие `orig.tar.gz` | Добавлено пояснение: не ошибка, можно игнорировать или создать вручную |
-
-## 5. Процесс сборки
-
-### Пошаговая инструкция
-
-\`\`\`bash
-# 1. Клонировать репозиторий
-git clone https://github.com/SnakeU2/bash-it-dpkg.git
-cd bash-it-dpkg
-
-# 2. Установить зависимости
-sudo apt install -y devscripts debhelper git
-
-# 3. Подготовить окружение (клонирует bash-it)
-./setup.sh
-
-# 4. Собрать пакет
-debuild -US -uc
-
-# 5. Установить
-sudo dpkg -i ../bash-it-dpkg_*.deb
-sudo apt-get install -f
-
-# 6. Активировать
-bashitctl activate
-source /etc/profile
-\`\`\`
-
-## 6. Документация и поддержка
+## 4. Документация и поддержка
 
 - **README.md** — полное руководство на английском
 - **man 7 bash-it-dpkg** — справка по пакету
 - **GitHub Releases** — прямые ссылки на `.deb`
 - **GitHub Actions** — потенциальная автоматизация (готов к внедрению)
 
-## 7. Текущее состояние
+## 5. Текущее состояние
 
 - ✅ Репозиторий инициализирован: `main` ветка, первый коммит
 - ✅ Все файлы добавлены, `.gitignore` и `.gitattributes` настроены
@@ -78,7 +68,7 @@ source /etc/profile
 - ✅ Версия `1.0.0-1` опубликована в релизах
 - ✅ Поддерживается установка "одной командой"
 
-## 8. Планы на будущее
+## 6. Планы на будущее
 
 | Задача | Статус |
 |-------|--------|
@@ -88,7 +78,7 @@ source /etc/profile
 | Поддержка `make deb`, `make clean` | ⏳ |
 | PPA или локальный репозиторий | ✅ Возможен |
 
-## 9. Заключение
+## 7. Заключение
 
 Разработан **стабильный, воспроизводимый и удобный в использовании** Debian-пакет для Bash-it.
 
