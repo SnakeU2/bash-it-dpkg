@@ -1,0 +1,45 @@
+#!/usr/bin/make -f
+
+# debian/rules for bash-it-dpkg
+# Builds a clean Debian package with manual man page compression.
+# Explicitly disables dh_installman to prevent conflicts in compat 13.
+# All steps are safe and reproducible.
+
+%:
+	dh $@
+
+override_dh_auto_install:
+	# Create target directory for bash-it
+	install -d $(CURDIR)/debian/bash-it-dpkg/opt/bash-it
+
+	# Copy upstream files (cleaned)
+	cp -a $(CURDIR)/opt/bash-it/* $(CURDIR)/debian/bash-it-dpkg/opt/bash-it/
+
+	# Install all files, including man page (as .7)
+	dh_install
+
+	# Compress man page manually (required in compat 13)
+	# This avoids reliance on dh_installman
+	gzip -9n $(CURDIR)/debian/bash-it-dpkg/usr/share/man/man7/bash-it-dpkg.7
+
+override_dh_fixperms:
+	# Apply default permissions
+	dh_fixperms
+
+	# All .bash files should be readable
+	find $(CURDIR)/debian/bash-it-dpkg/opt/bash-it -name "*.bash" -exec chmod 644 {} \;
+
+	# Make scripts executable
+	chmod 755 $(CURDIR)/debian/bash-it-dpkg/opt/bash-it/bash_it.sh
+	chmod 755 $(CURDIR)/debian/bash-it-dpkg/usr/bin/bashitctl
+
+	# Fix directory permissions
+	find $(CURDIR)/debian/bash-it-dpkg -type d -exec chmod 755 {} \;
+
+override_dh_installman:
+	@echo "Skipping dh_installman: man page compressed manually"
+
+override_dh_clean:
+	dh_clean
+	# Remove build
+	rm -rf ../bash-it-dpkg_*.*

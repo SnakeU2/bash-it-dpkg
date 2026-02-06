@@ -1,0 +1,13 @@
+# debian/source/options
+keep-empty-directories
+abort-on-upstream-changes
+# Suppress warnings about file permissions not being included in diff
+extend-diff-ignore = "(^|/)(\\.git|\\.gitignore|\\.DS_Store|\\.keep|\\.gitkeep)$"
+
+# Allow cleaner diffs
+single-debian-patch
+
+# Reproducible compression
+compression = "gzip"
+compression-level = 9
+

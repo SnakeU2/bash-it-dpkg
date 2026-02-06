@@ -1,0 +1,27 @@
+# Normalize line endings for text files
+* text=auto
+
+# Ensure shell scripts use LF (important for Linux)
+*.sh text eol=lf
+*.bash text eol=lf
+debian/rules text eol=lf
+
+# Prevent Git from preserving symlinks as such in archives
+# This avoids dpkg-source errors with symlinks (e.g. README.rst -> ../../docs/...)
+opt/bash-it/** -text ident
+
+# Treat documentation files as text, but avoid issues with encoding
+*.md text diff=markdown
+*.rst text
+
+# Binary files — keep as-is
+*.png binary
+*.jpg binary
+*.gif binary
+
+# No merge markers in certain files
+*.conf -merge
+*.json -merge
+*.yml -merge
+*.yaml -merge
+

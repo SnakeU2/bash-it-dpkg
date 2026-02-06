@@ -1,0 +1,71 @@
+#!/bin/bash
+# /usr/bin/bash-it
+# CLI tool to manage user-level bash-it activation
+
+set -e
+
+BASH_IT_USER_DIR="$HOME/.bash_it"
+ENABLE_FLAG="$BASH_IT_USER_DIR/enable"
+
+show_help() {
+    echo "Usage: bashitctl [enable|disable|status|help]"
+    echo ""
+    echo "  enable        Activate bash-it for current user"
+    echo "  disable       Deactivate"
+    echo "  status        Show current status"
+    echo "  help          Show this message"
+}
+
+status() {
+    if [ -f "$ENABLE_FLAG" ]; then
+        echo "bash-it is ENABLED for user $USER"
+    else
+        echo "bash-it is DISABLED for user $USER"
+    fi
+}
+
+do_enable() {
+    if [ -f "$ENABLE_FLAG" ]; then
+        echo "bash-it is already enabled." >&2
+        exit 1
+    fi
+
+    echo "Enabling bash-it for $USER..."
+    mkdir -p "$BASH_IT_USER_DIR/enabled"
+    mkdir -p "$BASH_IT_USER_DIR/custom"/{aliases,plugins,themes}
+    touch "$ENABLE_FLAG"
+    echo "bash-it has been enabled."
+    echo "Run 'source /etc/profile' or open a new shell."
+}
+
+do_disable() {
+    if [ ! -f "$ENABLE_FLAG" ]; then
+        echo "bash-it is not enabled." >&2
+        exit 1
+    fi
+
+    echo "Disabling bash-it for $USER..."
+    rm -f "$ENABLE_FLAG"
+    echo "bash-it has been disabled."
+}
+
+case "${1:-}" in
+    enable)
+        do_enable
+        ;;
+    disable)
+        do_disable
+        ;;
+    status)
+        status
+        ;;
+    help|--help|-h)
+        show_help
+        ;;
+    *)
+        echo "Unknown command: $1" >&2
+        echo "Run: bashitctl help" >&2
+        exit 1
+        ;;
+esac
+

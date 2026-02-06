@@ -1,0 +1,18 @@
+Source: bash-it-dpkg
+Section: admin
+Priority: optional
+Maintainer: Alexey Abrosimov <snake-box@yandex.ru>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.0
+Homepage: https://github.com/SnakeU2/bash-it-dpkg/
+
+Package: bash-it-dpkg
+Architecture: all
+Depends: bash
+Description: System-wide bash-it with CLI enable/disable
+ Bash-it is a customizable framework for managing bash configurations.
+ This package installs it once in /opt/bash-it and provides the command
+ 'bash-it enable' to activate it per-user with personal plugins, themes,
+ and aliases. No code duplication.
+ .
+ Man page: man 7 bash-it-dpkgPackage: bash-it-dpkg

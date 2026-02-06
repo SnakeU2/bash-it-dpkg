@@ -1,0 +1,8 @@
+bash-it-dpkg (1.0.0-1) stable; urgency=medium
+
+  * Initial release: system-wide bash-it with CLI management.
+  * Users enable via: bash-it enable
+  * Single copy in /opt/bash-it, per-user config in ~/.bash_it
+
+ -- Alexey Abrosimov <snake-box@yandex.ru>  Thu, 05 Feb 2026 14:51:30 +0300
+

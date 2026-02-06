@@ -1,0 +1,39 @@
+.TH BASH\-IT\-DPKG 7 "Feb 2026" "bash-it-dpkg 1.0.0" "System Administration"
+.SH NAME
+bash\-it\-dpkg \- System\-wide bash\-it framework
+.SH DESCRIPTION
+The
+.I bash\-it\-dpkg
+package provides a system\-wide installation of
+.BR bash\-it ,
+a framework for managing bash configurations.
+It installs to
+.RI /opt/bash-it
+and allows per\-user activation via
+.B bashitctl enable .
+
+All users share one copy; personal settings go to
+.RI ~/.bash_it .
+.SH COMMANDS
+.IP "\fBbashitctl enable\fR"
+Activate for current user.
+.IP "\fBbashitctl disable\fR"
+Deactivate.
+.IP "\fBbashitctl status\fR"
+Show activation status.
+.SH FILES
+.IP "\fB/opt/bash-it/\fR"
+Core framework.
+.IP "\fB/etc/profile.d/bash-it.sh\fR"
+Auto\-loads bash-it if enabled.
+.IP "\fB~/.bash_it/enable\fR"
+Flag file controlling activation.
+.IP "\fB~/.bash_it/enabled/\fR"
+User\-specific symlinks to active plugins/aliases.
+.IP "\fB~/.bash_it/custom/\fR"
+User\-owned directory for custom extensions.
+.SH SEE ALSO
+.BR bash (1),
+.BR profile (5)
+.SH AUTHOR
+This man page was written by Alexey Abrosimov <snake-box@yandex.ru>

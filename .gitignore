@@ -1,0 +1,50 @@
+# === Build artifacts in parent directory ===
+# Note: files in .. are outside repo — not tracked by Git anyway
+
+# === Temporary build directory (if used) ===
+/build/
+
+# === Debian build temporary files ===
+debian/files
+debian/tmp
+debian/*.substvars
+debian/*.log
+debian/bash-it-dpkg
+debian/*.debhelper.log
+
+# === debhelper internal state ===
+debian/debhelper-build-stamp
+debian/.debhelper/
+
+# === Package build output ===
+*.deb
+*.dsc
+*.changes
+*.tar.gz
+*.buildinfo
+*.upload
+
+# === Upstream code ===
+opt/bash-it/
+!opt/.keep
+
+# === Logs and temp ===
+*.log
+*.tmp
+*~
+.*.swp
+.swp
+.swo
+
+# === Editor and IDE files ===
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# === Documentation build output ===
+docs/_build/
+docs/_output/
+
