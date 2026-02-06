@@ -12,85 +12,130 @@ This package enables:
 
 ---
 
-## 📦 Where to Get the .deb Package
+## 📦 Download the Latest .deb Package
 
-The package is not yet published in public repositories. You can obtain it as follows:
+The prebuilt package is available via GitHub Releases:
 
-### Option 1: Build from Source (Recommended)
-See [How to Clone and Build from Source](#how-to-clone-and-build-from-source)
+🔗 **[Download bash-it-dpkg_1.0.0-1_all.deb](https://github.com/SnakeU2/bash-it-dpkg/releases/download/v1.0.0/bash-it-dpkg_1.0.0-1_all.deb)**
 
-### Option 2: CI/CD Artifacts
-If GitHub Actions or another CI system is configured, check the **Actions → Artifacts** or **Releases** tab on GitHub.
+Or install directly from the command line:
 
----
+```
+wget https://github.com/SnakeU2/bash-it-dpkg/releases/download/v1.0.0/bash-it-dpkg_1.0.0-1_all.deb
+sudo dpkg -i bash-it-dpkg_1.0.0-1_all.deb
+sudo apt-get install -f  # Fix missing dependencies if any
 
-## 🛠 How to Install
+```
 
-Ensure build dependencies are installed:
+💡 Replace version in URL to match the latest release.
 
-```bash
+🛠 How to Install
+Ensure Git is installed (required for Bash-it functionality):
+
+```
 sudo apt install -y git
-Install the package:
 
-bash
+```
+
+Install the downloaded package:
+
+```
+
 sudo dpkg -i bash-it-dpkg_*.deb
-sudo apt-get install -f  # Fix missing dependencies if needed
+sudo apt-get install -f
+
+```
+
 🔌 Activate and Deactivate
 Activate for Current User
-bash
+
+
+```
+
 bashitctl activate
+
+```
+
 💡 This creates ~/.bash_it/enable. Changes apply at next login.
 
 To apply immediately:
 
-bash
+```
+
 source /etc/profile
+
+```
 Now manage components using the original bash-it command:
 
-bash
+```
+
 bash-it enable alias/general
 bash-it enable plugin/git
 bash-it theme powerline-plus
+
+```
 Deactivate
-bash
+
+```
+
 bashitctl deactivate
+
+```
+
 ❗ Disables bash-it for future sessions.
 Current shell remains unchanged.
 
 🧱 How to Clone and Build from Source
+
 1. Clone the Repository
-bash
+
+```
+
 git clone https://github.com/SnakeU2/bash-it-dpkg.git
 cd bash-it-dpkg
+
+```
+
 2. Install Build Dependencies
-bash
+
+```
+
 sudo apt install -y devscripts debhelper git
+
+```
+
 3. Prepare Build Environment
-bash
+
+```
+
 ./setup.sh
+
+```
 This script:
 
 Clones upstream bash-it into opt/bash-it/
 Resolves symbolic links that break dpkg-source
 Removes unnecessary files (docs, .git)
 Ensures clean, reproducible source tree
+
 4. Build the Package
-bash
+
+```
+
 debuild -us -uc
+
+```
+
 Output packages will appear in the parent directory:
 
-text
-../bash-it-dpkg_*.deb
-../bash-it-dpkg_*.dsc
-../bash-it-dpkg_*.changes
+```
+../bash-it-dpkg_1.0.0-1_all.deb
+../bash-it-dpkg_1.0.0-1.dsc
+../bash-it-dpkg_1.0.0-1.changes
+
+```
+
 📚 Documentation
 man 7 bash-it-dpkg — full package reference
 bashitctl --help — activation control
 bash-it help — component management after activation
-🤝 Author
-Alexey Abrosimov
-Email: alexey.abrosimov@example.com
-GitHub: @SnakeU2
-
-
----
