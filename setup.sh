@@ -19,7 +19,7 @@ fi
 
 # Clone upstream bash-it into opt/bash-it
 echo "📥 Cloning Bash-it from https://github.com/Bash-it/bash-it..."
-git clone --depth=1 https://github.com/Bash-it/bash-it "$OPT_DIR"
+git clone --depth=1 https://github.com/SnakeU2/bash-it-fork-for-dpkg "$OPT_DIR"
 
 # Remove .git to avoid including git metadata in package
 echo "🗑️ Removing .git directory..."
