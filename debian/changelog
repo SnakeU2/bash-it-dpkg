@@ -1,3 +1,10 @@
+bash-it-dpkg (1.0.1) unstable; urgency=medium
+
+  * Added proper .orig.tar.gz naming for clean builds
+  * Fixed symlink resolution in build process
+
+ -- Alexey Abrosimov <snake-box@yandex.ru>  Wed, 25 Feb 2026 23:20:00 +0300
+
 bash-it-dpkg (1.0.0-1) stable; urgency=medium
 
   * Initial release: system-wide bash-it with CLI management.
