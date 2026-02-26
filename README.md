@@ -104,35 +104,27 @@ sudo apt install -y devscripts debhelper git
 
 ```
 
-3. Prepare Build Environment
+3. Build the Package directly
+
+The build process now includes all necessary preparation steps:
+
+- Clones the upstream repository if not present
+- Updates it if already cloned
+- Cleans up `.git`, `docs`, and screenshots
+- Resolves problematic symlinks
+
+Simply run:
 
 ```
-
-./setup.sh
-
-```
-This script:
-
-Clones upstream bash-it into opt/bash-it/
-Resolves symbolic links that break dpkg-source
-Removes unnecessary files (docs, .git)
-Ensures clean, reproducible source tree
-
-4. Build the Package
-
+make build NEW_VERSION=1.0.2-1
 ```
 
-debuild -us -uc
+The package will be built with the new version, and the output files will appear in the parent directory:
 
 ```
-
-Output packages will appear in the parent directory:
-
-```
-../bash-it-dpkg_1.0.0-1_all.deb
-../bash-it-dpkg_1.0.0-1.dsc
-../bash-it-dpkg_1.0.0-1.changes
-
+../bash-it-dpkg_1.0.2-1_all.deb
+../bash-it-dpkg_1.0.2-1.dsc
+../bash-it-dpkg_1.0.2-1.changes
 ```
 
 📚 Documentation
