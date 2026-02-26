@@ -61,31 +61,6 @@ check-upstream:
 		fi; \
 	fi
 
-	# Remove git metadata
-	rm -rf "$(UPSTREAM_DIR)/.git"
-
-	# Remove documentation and screenshots
-	rm -rf "$(UPSTREAM_DIR)/docs" "$(UPSTREAM_DIR)/screenshots"
-
-	# Resolve symbolic links
-	find "$(UPSTREAM_DIR)" -type l -name "*.rst" -o -type l -name "*.md" | while read -r symlink; do \
-		target="$$$$(readlink \"$$symlink\")"; \
-		dir="$$$$(dirname \"$$symlink\")"; \
-		base="$$$$(basename \"$$symlink\")"; \
-		echo "⚠️ Found symlink: $$symlink -> $$target"; \
-		rm "$$symlink"; \
-		if [[ "$$target" == /* ]]; then \
-			echo "[Documentation not included in package]" > "$$symlink"; \
-		elif [ -f "$$dir/$$target" ]; then \
-			cp "$$dir/$$target" "$$symlink"; \
-		elif [ -f "$(UPSTREAM_DIR)/$$target" ]; then \
-			cp "$(UPSTREAM_DIR)/$$target" "$$symlink"; \
-		else \
-			echo "[Original link: $$target]" > "$$symlink"; \
-			echo "📄 Placeholder created for missing target"; \
-		fi; \
-	done
-
 # Create the orig tarball from upstream source
 $(ORIG_TARBALL): check-upstream
 	@echo "Creating $(ORIG_TARBALL) from upstream source..."
@@ -97,24 +72,8 @@ $(ORIG_TARBALL): check-upstream
 	rm -rf "$(OPT_DIR)/.git"
 	# Remove documentation and screenshots
 	rm -rf "$(OPT_DIR)/docs" "$(OPT_DIR)/screenshots"
-	# Resolve symbolic links
-	find "$(OPT_DIR)" -type l -name "*.rst" -o -type l -name "*.md" | while read -r symlink; do \
-		target=""; \
-	dir=""; \
-	base=""; \
-	echo "⚠️ Found symlink: $symlink -> $target"; \
-	rm "$symlink"; \
-	if [[ "$target" == /* ]]; then \
-		echo "[Documentation not included in package]" > "$symlink"; \
-	elif [ -f "$dir/$target" ]; then \
-		cp "$dir/$target" "$symlink"; \
-	elif [ -f "$(OPT_DIR)/$target" ]; then \
-		cp "$(OPT_DIR)/$target" "$symlink"; \
-	else \
-		echo "[Original link: $target]" > "$symlink"; \
-		echo "📄 Placeholder created for missing target"; \
-	fi; \
-	done
+	# Resolve symbolic links using external script
+	./scripts/resolve-symlinks.sh "$(OPT_DIR)"
 	# Create the orig tarball
 	tar --exclude='.git' --exclude='*.orig.tar.gz' -czf "$(ORIG_TARBALL)" -C "$(PACKAGE_DIR)/.." bash-it-fork-for-dpkg
 	@echo "$(ORIG_TARBALL) created successfully"
