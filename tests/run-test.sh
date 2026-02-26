@@ -4,9 +4,9 @@
 CONTAINER_NAME="bash-it-test"
 
 # Проверка наличия .deb файла в папке bash-it-dpkg
-DEB_FILE=$(ls ../bash-it-dpkg_*.deb 2>/dev/null | head -n1)
+DEB_FILE=$(ls bash-it-dpkg_*.deb 2>/dev/null | head -n1)
 if [ -z "$DEB_FILE" ]; then
-  echo "❌ Не найден файл .deb в директории bash-it-dpkg для тестирования."
+  echo "❌ Не найден файл .deb в директории для тестирования."
   exit 1
 fi
 
