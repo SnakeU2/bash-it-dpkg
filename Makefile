@@ -7,17 +7,18 @@ UPSTREAM_DIR := $(PACKAGE_DIR)/../bash-it-fork-for-dpkg
 OPT_DIR := $(PACKAGE_DIR)/opt/bash-it
 
 # Current package version is read from debian/changelog
-PACKAGE_VERSION := $$(shell head -n 1 debian/changelog | cut -d '(' -f2 | cut -d ')' -f1)
-UPSTREAM_VERSION := $$(shell echo $$(PACKAGE_VERSION) | cut -d '-' -f1)
-ORIG_TARBALL := $(PACKAGE_NAME)_$$(UPSTREAM_VERSION).orig.tar.gz
+PACKAGE_VERSION := $(shell head -n 1 debian/changelog | cut -d '(' -f2 | cut -d ')' -f1)
+UPSTREAM_VERSION := $(shell echo $(PACKAGE_VERSION) | cut -d '-' -f1)
+ORIG_TARBALL := $(PACKAGE_NAME)_$(UPSTREAM_VERSION).orig.tar.gz
 
 # Upstream repository
 UPSTREAM_REPO := https://github.com/SnakeU2/bash-it-fork-for-dpkg
+UPSTREAM_BRANCH := develop
 
 # Current package version is read from debian/changelog
-PACKAGE_VERSION := $$(shell head -n 1 debian/changelog | cut -d '(' -f2 | cut -d ')' -f1)
-UPSTREAM_VERSION := $$(shell echo $$(PACKAGE_VERSION) | cut -d '-' -f1)
-ORIG_TARBALL := $(PACKAGE_NAME)_$$(UPSTREAM_VERSION).orig.tar.gz
+PACKAGE_VERSION := $(shell head -n 1 debian/changelog | cut -d '(' -f2 | cut -d ')' -f1)
+UPSTREAM_VERSION := $(shell echo $(PACKAGE_VERSION) | cut -d '-' -f1)
+ORIG_TARBALL := $(PACKAGE_NAME)_$(UPSTREAM_VERSION).orig.tar.gz
 
 # Build targets
 .PHONY: all build build-new-version clean distclean
@@ -41,19 +42,23 @@ build-new-version: check-upstream $(ORIG_TARBALL)
 	debuild -us -uc
 
 # Main build target (no version change)
-build:
+build: check-upstream $(ORIG_TARBALL)
 	@echo "Building $(PACKAGE_NAME) package without version change..."
-	@echo "Using current version: $$(PACKAGE_VERSION)"
+	@echo "Using current version: $(PACKAGE_VERSION)"
 	debuild -us -uc || true
 
 # Check if upstream repository exists, clone if needed
 check-upstream:
 	@if [ ! -d "$(UPSTREAM_DIR)" ]; then \
 		echo "Upstream repository not found, cloning from $(UPSTREAM_REPO)..."; \
-		git clone --depth=1  $(UPSTREAM_REPO) $(UPSTREAM_DIR); \
+		git clone --depth=1 -b $(UPSTREAM_BRANCH) $(UPSTREAM_REPO) $(UPSTREAM_DIR); \
 	else \
 		echo "Upstream repository found at $(UPSTREAM_DIR)"; \
-		cd $(UPSTREAM_DIR) && git checkout master 2>/dev/null || echo "Master branch not found, staying on current branch"; \
+		if [ -d "$(UPSTREAM_DIR)/.git" ]; then \
+			cd $(UPSTREAM_DIR) && git fetch origin && git checkout $(UPSTREAM_BRANCH) 2>/dev/null || echo "Branch $(UPSTREAM_BRANCH) not found, staying on current branch"; \
+		else \
+			echo "Upstream repository is not a git repository, skipping branch checkout"; \
+		fi; \
 	fi
 
 	# Remove git metadata
@@ -94,21 +99,21 @@ $(ORIG_TARBALL): check-upstream
 	rm -rf "$(OPT_DIR)/docs" "$(OPT_DIR)/screenshots"
 	# Resolve symbolic links
 	find "$(OPT_DIR)" -type l -name "*.rst" -o -type l -name "*.md" | while read -r symlink; do \
-		target="$$$(readlink \"$$symlink\")"; \
-		dir="$$$(dirname \"$$symlink\")"; \
-		base="$$$(basename \"$$symlink\")"; \
-		echo "⚠️ Found symlink: $$symlink -> $$target"; \
-		rm "$$symlink"; \
-		if [[ "$$target" == /* ]]; then \
-			echo "[Documentation not included in package]" > "$$symlink"; \
-		elif [ -f "$$dir/$$target" ]; then \
-			cp "$$dir/$$target" "$$symlink"; \
-		elif [ -f "$(OPT_DIR)/$$target" ]; then \
-			cp "$(OPT_DIR)/$$target" "$$symlink"; \
-		else \
-			echo "[Original link: $$target]" > "$$symlink"; \
-			echo "📄 Placeholder created for missing target"; \
-		fi; \
+		target=""; \
+	dir=""; \
+	base=""; \
+	echo "⚠️ Found symlink: $symlink -> $target"; \
+	rm "$symlink"; \
+	if [[ "$target" == /* ]]; then \
+		echo "[Documentation not included in package]" > "$symlink"; \
+	elif [ -f "$dir/$target" ]; then \
+		cp "$dir/$target" "$symlink"; \
+	elif [ -f "$(OPT_DIR)/$target" ]; then \
+		cp "$(OPT_DIR)/$target" "$symlink"; \
+	else \
+		echo "[Original link: $target]" > "$symlink"; \
+		echo "📄 Placeholder created for missing target"; \
+	fi; \
 	done
 	# Create the orig tarball
 	tar --exclude='.git' --exclude='*.orig.tar.gz' -czf "$(ORIG_TARBALL)" -C "$(PACKAGE_DIR)/.." bash-it-fork-for-dpkg
