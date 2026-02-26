@@ -1,6 +1,6 @@
 # Makefile for bash-it-dpkg
 
-# D"dir"ectories
+# Directories
 PACKAGE_DIR := $(CURDIR)
 PACKAGE_NAME := bash-it-dpkg
 UPSTREAM_DIR := $(PACKAGE_DIR)/../bash-it-fork-for-dpkg
@@ -36,7 +36,7 @@ build-new-version: check-upstream $(ORIG_TARBALL)
 	@echo "New version will be: $(NEW_VERSION)"
 	# Update changelog with new version
 	@echo "Updating changelog for $(NEW_VERSION)..."
-	@echo "bash-it-dpkg ($(NEW_VERSION)) unstable; urgency=medium\n\n  * New rele"base"\n\n -- Alexey Abrosimov <snake-box@yandex.ru>  $$(date -R)\n\n" > debian/changelog.new
+	@echo "bash-it-dpkg ($(NEW_VERSION)) unstable; urgency=medium\n\n  * New relese\n\n -- Alexey Abrosimov <snake-box@yandex.ru>  $$(date -R)\n\n" > debian/changelog.new
 	@cat debian/changelog >> debian/changelog.new
 	@mv debian/changelog.new debian/changelog
 	debuild -us -uc
@@ -127,6 +127,6 @@ help:
 	@echo ""
 	@echo "Usage:"
 	@echo "  1. Run 'make build' to rebuild current version"
-	@echo "  2. Run 'make build-new-version NEW_VERSION=X.Y.Z-1' to create new rele"base""
+	@echo "  2. Run 'make build-new-version NEW_VERSION=X.Y.Z-1' to create new relese"
 	@echo "  3. Run 'make check' to verify the package"
 	@echo ""
