@@ -16,7 +16,7 @@ This package enables:
 
 The prebuilt package is available via GitHub Releases:
 
-🔗 **[Download bash-it-dpkg_1.0.0-1_all.deb](https://github.com/SnakeU2/bash-it-dpkg/releases/download/v1.0.0/bash-it-dpkg_1.0.0-1_all.deb)**
+🔗 **[Download bash-it-dpkg_1.0.1_all.deb](https://github.com/SnakeU2/bash-it-dpkg/releases/download/v1.0.1/bash-it-dpkg_1.0.1_all.deb)**
 
 Or install directly from the command line:
 
